@@ -107,6 +107,29 @@ function arv2_get_logo_url() {
 }
 
 /**
+ * Hero navbar brand link attributes (native logo; dark-section invert via class).
+ *
+ * @return array{class: string, track: string}
+ */
+function arv2_get_hero_brand_attrs() {
+	$classes = array( 'ar-hero__brand' );
+	$track   = '';
+
+	if ( is_front_page() ) {
+		$classes[] = 'ar-hero__brand--on-dark';
+		$track     = '.ar-hero';
+	} elseif ( is_page( 'about' ) || is_page_template( 'page-about.php' ) ) {
+		$classes[] = 'ar-hero__brand--on-dark';
+		$track     = '.collective-statement';
+	}
+
+	return array(
+		'class' => implode( ' ', $classes ),
+		'track' => $track,
+	);
+}
+
+/**
  * Get partner logo files from assets/partnerlogos.
  *
  * @return array<int, array{filename: string, url: string, color_url: string, alt: string}>
@@ -187,19 +210,56 @@ function arv2_get_partner_logos() {
 }
 
 /**
- * Render the homepage section meta block (description + View All CTA).
+ * Resolve a statement section asset URL.
  *
- * @param string $description Section description text.
- * @param string $url         Optional CTA URL.
+ * @param string $filename Asset filename.
+ * @return string
  */
-function arv2_section_meta( $description, $url = '#' ) {
+function arv2_statement_asset( $filename ) {
+	$url = arv2_get_image_url( $filename );
+
+	if ( ! $url ) {
+		$url = get_template_directory_uri() . '/assets/images/' . rawurlencode( $filename );
+	}
+
+	return $url;
+}
+
+/**
+ * Editorial arrow markup (site-wide CTA arrow).
+ *
+ * @return string
+ */
+function arv2_editorial_arrow() {
+	return '<span class="editorial-arrow" aria-hidden="true">→</span>';
+}
+
+/**
+ * Render the homepage section meta block (description + optional View All CTA).
+ *
+ * @param string $description    Section description text.
+ * @param string $url            Optional CTA URL.
+ * @param bool   $show_cta       Whether to render the View All CTA.
+ * @param string $cta_aria_label Optional accessible label for the CTA.
+ * @param string $cta_text       Optional CTA label (defaults to View All).
+ */
+function arv2_section_meta( $description, $url = '#', $show_cta = true, $cta_aria_label = '', $cta_text = '' ) {
+	$cta_label = $cta_text ? $cta_text : __( 'View All', 'activate-rights-v2' );
 	?>
 	<div class="section-meta">
 		<p class="section-meta__description"><?php echo esc_html( $description ); ?></p>
-		<a class="section-meta__cta" href="<?php echo esc_url( $url ); ?>">
-			<?php esc_html_e( 'View All', 'activate-rights-v2' ); ?>
-			<span class="section-meta__cta-arrow" aria-hidden="true">→</span>
-		</a>
+		<?php if ( $show_cta ) : ?>
+			<a
+				class="section-meta__cta"
+				href="<?php echo esc_url( $url ); ?>"
+				<?php if ( $cta_aria_label ) : ?>
+					aria-label="<?php echo esc_attr( $cta_aria_label ); ?>"
+				<?php endif; ?>
+			>
+				<?php echo esc_html( $cta_label ); ?>
+				<?php echo arv2_editorial_arrow(); ?>
+			</a>
+		<?php endif; ?>
 	</div>
 	<?php
 }
@@ -326,9 +386,101 @@ function arv2_body_classes( $classes ) {
 		$classes[] = 'has-cinematic-hero';
 	}
 
+	if ( is_page( 'about' ) || is_page_template( 'page-about.php' ) ) {
+		$classes[] = 'page-about';
+	}
+
+	if ( is_page( 'reports' ) || is_page_template( 'page-reports.php' ) ) {
+		$classes[] = 'page-reports';
+	}
+
+	if ( is_page( 'blog' ) || is_page_template( 'page-blog.php' ) ) {
+		$classes[] = 'page-blog';
+	}
+
+	if ( is_page( 'contact' ) || is_page_template( 'page-contact.php' ) ) {
+		$classes[] = 'page-contact';
+	}
+
 	return $classes;
 }
 add_filter( 'body_class', 'arv2_body_classes' );
+
+/**
+ * Force page-about.php for the About page slug.
+ *
+ * @param string $template Path to the template file.
+ * @return string
+ */
+function arv2_about_page_template( $template ) {
+	if ( is_page( 'about' ) ) {
+		$about_template = locate_template( 'page-about.php' );
+
+		if ( $about_template ) {
+			return $about_template;
+		}
+	}
+
+	return $template;
+}
+add_filter( 'template_include', 'arv2_about_page_template', 99 );
+
+/**
+ * Force page-reports.php for the Reports page slug.
+ *
+ * @param string $template Path to the template file.
+ * @return string
+ */
+function arv2_reports_page_template( $template ) {
+	if ( is_page( 'reports' ) ) {
+		$reports_template = locate_template( 'page-reports.php' );
+
+		if ( $reports_template ) {
+			return $reports_template;
+		}
+	}
+
+	return $template;
+}
+add_filter( 'template_include', 'arv2_reports_page_template', 99 );
+
+/**
+ * Force page-blog.php for the Blog page slug.
+ *
+ * @param string $template Path to the template file.
+ * @return string
+ */
+function arv2_blog_page_template( $template ) {
+	if ( is_page( 'blog' ) ) {
+		$blog_template = locate_template( 'page-blog.php' );
+
+		if ( $blog_template ) {
+			return $blog_template;
+		}
+	}
+
+	return $template;
+}
+add_filter( 'template_include', 'arv2_blog_page_template', 99 );
+
+/**
+ * Force page-contact.php for the Contact page slug.
+ *
+ * @param string $template Path to the template file.
+ * @return string
+ */
+function arv2_contact_page_template( $template ) {
+	if ( is_page( 'contact' ) ) {
+		$contact_template = locate_template( 'page-contact.php' );
+
+		if ( $contact_template ) {
+			return $contact_template;
+		}
+	}
+
+	return $template;
+}
+add_filter( 'template_include', 'arv2_contact_page_template', 99 );
 
 /**
  * Hero background video URL.
@@ -359,7 +511,7 @@ function arv2_fallback_menu() {
 	$links = array(
 		home_url( '/' )           => __( 'Home', 'activate-rights-v2' ),
 		home_url( '/campaigns/' ) => __( 'Campaigns', 'activate-rights-v2' ),
-		home_url( '/reports/' )   => __( 'Reports', 'activate-rights-v2' ),
+		home_url( '/reports' )    => __( 'Reports', 'activate-rights-v2' ),
 		home_url( '/resources/' ) => __( 'Resources', 'activate-rights-v2' ),
 		home_url( '/events/' )    => __( 'Events', 'activate-rights-v2' ),
 	);

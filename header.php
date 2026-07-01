@@ -99,4 +99,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	</div>
 </header>
 
+<?php
+if ( is_front_page() || is_page( 'about' ) || is_page_template( 'page-about.php' ) || is_page( 'reports' ) || is_page_template( 'page-reports.php' ) || is_page( 'blog' ) || is_page_template( 'page-blog.php' ) || is_page( 'contact' ) || is_page_template( 'page-contact.php' ) ) {
+	get_template_part( 'template-parts/hero', 'navbar' );
+}
+?>
+
 <main id="main-content" class="site-main">

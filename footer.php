@@ -33,23 +33,26 @@ $footer_logo = arv2_get_logo_url();
 
 				<nav class="site-footer__contact" aria-label="<?php esc_attr_e( 'Footer contact links', 'activate-rights-v2' ); ?>">
 					<p class="site-footer__contact-label"><?php esc_html_e( 'Stay in touch', 'activate-rights-v2' ); ?></p>
-					<a class="site-footer__contact-link" href="#" rel="noopener noreferrer">
-						<?php esc_html_e( 'Instagram', 'activate-rights-v2' ); ?> <span aria-hidden="true">↗</span>
+					<a class="site-footer__contact-link editorial-link" href="#" rel="noopener noreferrer">
+						<?php esc_html_e( 'Instagram', 'activate-rights-v2' ); ?>
+						<?php echo arv2_editorial_arrow(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in helper. ?>
 					</a>
-					<a class="site-footer__contact-link" href="#" rel="noopener noreferrer">
-						<?php esc_html_e( 'Facebook', 'activate-rights-v2' ); ?> <span aria-hidden="true">↗</span>
+					<a class="site-footer__contact-link editorial-link" href="#" rel="noopener noreferrer">
+						<?php esc_html_e( 'Facebook', 'activate-rights-v2' ); ?>
+						<?php echo arv2_editorial_arrow(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in helper. ?>
 					</a>
-					<a class="site-footer__contact-link" href="mailto:info@activaterights.org">
-						<?php esc_html_e( 'Contact us', 'activate-rights-v2' ); ?> <span aria-hidden="true">↗</span>
+					<a class="site-footer__contact-link editorial-link" href="mailto:info@activaterights.org">
+						<?php esc_html_e( 'Contact us', 'activate-rights-v2' ); ?>
+						<?php echo arv2_editorial_arrow(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in helper. ?>
 					</a>
 				</nav>
 			</div>
 		</div>
 
-		<div class="site-footer__row site-footer__row--cta">
+		<div class="site-footer__row site-footer__row--cta" id="contact">
 			<div class="site-footer__cta">
 				<p class="site-footer__cta-lead"><?php esc_html_e( 'Interested in working with us?', 'activate-rights-v2' ); ?></p>
-				<a class="site-footer__inquiry" href="mailto:info@activaterights.org"><?php esc_html_e( 'Send Inquiry', 'activate-rights-v2' ); ?></a>
+				<a class="site-footer__inquiry" href="<?php echo esc_url( home_url( '/contact' ) ); ?>"><?php esc_html_e( 'Send Inquiry', 'activate-rights-v2' ); ?></a>
 			</div>
 		</div>
 

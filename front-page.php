@@ -9,7 +9,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$site_logo    = arv2_get_logo_url();
 $cursor_image = arv2_get_image_url( 'cursor png.png' );
 
 if ( ! $cursor_image ) {
@@ -43,44 +42,11 @@ if ( ! function_exists( 'arv2_marquee_icon_src' ) ) {
 
 $partner_logos = arv2_get_partner_logos();
 
-/**
- * Resolve a statement section asset URL.
- *
- * @param string $filename Asset filename.
- * @return string
- */
-if ( ! function_exists( 'arv2_statement_asset' ) ) {
-	function arv2_statement_asset( $filename ) {
-		$url = arv2_get_image_url( $filename );
-
-		if ( ! $url ) {
-			$url = get_template_directory_uri() . '/assets/images/' . rawurlencode( $filename );
-		}
-
-		return $url;
-	}
-}
-
 get_header();
 ?>
 
 <div class="ar-home">
 	<section class="ar-hero" aria-labelledby="ar-hero-title">
-		<a class="ar-hero__brand" href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home">
-			<img
-				class="ar-hero__brand-logo"
-				src="<?php echo esc_url( $site_logo ); ?>"
-				alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>"
-				width="467"
-				height="187"
-				decoding="async"
-			>
-		</a>
-
-		<button class="ar-hero__menu" type="button" aria-label="<?php esc_attr_e( 'Open menu', 'activate-rights-v2' ); ?>">
-			<?php esc_html_e( 'Menu', 'activate-rights-v2' ); ?>
-		</button>
-
 		<div class="ar-hero__stage">
 			<img
 				class="ar-hero__cursor"
@@ -99,7 +65,7 @@ get_header();
 
 				<p class="ar-hero__subtitle">and we work for that</p>
 
-				<a class="ar-hero__cta" href="#contact">Let&rsquo;s Collab?</a>
+				<a class="ar-hero__cta" href="<?php echo esc_url( home_url( '/contact' ) ); ?>">Let&rsquo;s Collab?</a>
 			</div>
 		</div>
 	</section>
@@ -137,7 +103,11 @@ get_header();
 
 		<?php
 		arv2_section_meta(
-			'Research, archives, and community-driven interventions defending digital rights and collective memory.'
+			'Research, archives, and community-driven interventions defending digital rights and collective memory.',
+			home_url( '/about' ),
+			true,
+			__( 'About us', 'activate-rights-v2' ),
+			__( 'About Us', 'activate-rights-v2' )
 		);
 		?>
 	</header>
@@ -226,15 +196,15 @@ get_header();
 				>
 					<div class="projects__thumb projects__thumb--green">
 						<span class="projects__thumb-label">Shutdown Watch</span>
-						<span class="card-circle-arrow card-circle-arrow--light" aria-hidden="true">
+					</div>
+					<div class="projects__meta">
+						<h3 class="projects__name">Shutdown Watch</h3>
+						<span class="card-circle-arrow card-circle-arrow--dark" aria-hidden="true">
 							<svg class="card-circle-arrow__icon" width="40" height="40" viewBox="0 0 48 48" fill="none" aria-hidden="true">
 								<circle cx="24" cy="24" r="22.5" stroke="currentColor" stroke-width="1"/>
 								<path d="M18 24h12M28 20l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
 							</svg>
 						</span>
-					</div>
-					<div class="projects__meta">
-						<h3 class="projects__name">Shutdown Watch</h3>
 					</div>
 				</a>
 			</article>
@@ -248,15 +218,15 @@ get_header();
 				>
 					<div class="projects__thumb projects__thumb--yellow">
 						<span class="projects__thumb-label">Bangladesh Protest Archive</span>
+					</div>
+					<div class="projects__meta">
+						<h3 class="projects__name">Bangladesh Protest Archive</h3>
 						<span class="card-circle-arrow card-circle-arrow--dark" aria-hidden="true">
 							<svg class="card-circle-arrow__icon" width="40" height="40" viewBox="0 0 48 48" fill="none" aria-hidden="true">
 								<circle cx="24" cy="24" r="22.5" stroke="currentColor" stroke-width="1"/>
 								<path d="M18 24h12M28 20l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
 							</svg>
 						</span>
-					</div>
-					<div class="projects__meta">
-						<h3 class="projects__name">Bangladesh Protest Archive</h3>
 					</div>
 				</a>
 			</article>
@@ -270,15 +240,15 @@ get_header();
 				>
 					<div class="projects__thumb projects__thumb--blue">
 						<span class="projects__thumb-label">Where We Stood</span>
-						<span class="card-circle-arrow card-circle-arrow--light" aria-hidden="true">
+					</div>
+					<div class="projects__meta">
+						<h3 class="projects__name">Where We Stood</h3>
+						<span class="card-circle-arrow card-circle-arrow--dark" aria-hidden="true">
 							<svg class="card-circle-arrow__icon" width="40" height="40" viewBox="0 0 48 48" fill="none" aria-hidden="true">
 								<circle cx="24" cy="24" r="22.5" stroke="currentColor" stroke-width="1"/>
 								<path d="M18 24h12M28 20l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
 							</svg>
 						</span>
-					</div>
-					<div class="projects__meta">
-						<h3 class="projects__name">Where We Stood</h3>
 					</div>
 				</a>
 			</article>
@@ -302,18 +272,18 @@ get_header();
 					<div class="initiatives__media initiatives__media--blue">
 						<span class="initiatives__media-label">Bangladesh Protest Archive</span>
 					</div>
-					<a class="card-circle-arrow card-circle-arrow--light" href="#" aria-label="<?php esc_attr_e( 'View Bangladesh Protest Archive', 'activate-rights-v2' ); ?>">
-						<svg class="card-circle-arrow__icon" width="40" height="40" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-							<circle cx="24" cy="24" r="22.5" stroke="currentColor" stroke-width="1"/>
-							<path d="M18 24h12M28 20l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-						</svg>
-					</a>
 				</div>
 				<div class="initiatives__footer">
 					<div class="initiatives__content">
 						<h3 class="initiatives__name">Bangladesh Protest Archive</h3>
 						<p class="initiatives__desc">A living archive documenting protest memories, testimonies, and resistance across Bangladesh.</p>
 					</div>
+					<a class="card-circle-arrow card-circle-arrow--light" href="#" aria-label="<?php esc_attr_e( 'View Bangladesh Protest Archive', 'activate-rights-v2' ); ?>">
+						<svg class="card-circle-arrow__icon" width="40" height="40" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+							<circle cx="24" cy="24" r="22.5" stroke="currentColor" stroke-width="1"/>
+							<path d="M18 24h12M28 20l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+						</svg>
+					</a>
 				</div>
 			</article>
 
@@ -322,18 +292,18 @@ get_header();
 					<div class="initiatives__media initiatives__media--red">
 						<span class="initiatives__media-label">Archive &amp; Resist Fest Conclave</span>
 					</div>
-					<a class="card-circle-arrow card-circle-arrow--light" href="#" aria-label="<?php esc_attr_e( 'View Archive &amp; Resist Fest Conclave', 'activate-rights-v2' ); ?>">
-						<svg class="card-circle-arrow__icon" width="40" height="40" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-							<circle cx="24" cy="24" r="22.5" stroke="currentColor" stroke-width="1"/>
-							<path d="M18 24h12M28 20l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
-						</svg>
-					</a>
 				</div>
 				<div class="initiatives__footer">
 					<div class="initiatives__content">
 						<h3 class="initiatives__name">Archive &amp; Resist Fest Conclave</h3>
 						<p class="initiatives__desc">A gathering of films, conversations, and solidarity practices on torture prevention, transitional justice, and collective memory.</p>
 					</div>
+					<a class="card-circle-arrow card-circle-arrow--light" href="#" aria-label="<?php esc_attr_e( 'View Archive &amp; Resist Fest Conclave', 'activate-rights-v2' ); ?>">
+						<svg class="card-circle-arrow__icon" width="40" height="40" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+							<circle cx="24" cy="24" r="22.5" stroke="currentColor" stroke-width="1"/>
+							<path d="M18 24h12M28 20l4 4-4 4" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+						</svg>
+					</a>
 				</div>
 			</article>
 		</div>
@@ -345,7 +315,10 @@ get_header();
 
 		<?php
 		arv2_section_meta(
-			'Research, investigations, and publications unpacking surveillance, violence, and internet freedom.'
+			'Research, investigations, and publications unpacking surveillance, violence, and internet freedom.',
+			home_url( '/reports' ),
+			true,
+			__( 'View Reports Page', 'activate-rights-v2' )
 		);
 		?>
 	</header>
@@ -360,7 +333,7 @@ get_header();
 					<p class="published-reports__excerpt">An investigation into how network blackouts are used to suppress dissent, silence journalists, and reshape civic life across Bangladesh.</p>
 					<span class="published-reports__cta">
 						<span class="published-reports__cta-text">Read Report</span>
-						<span class="published-reports__cta-arrow" aria-hidden="true">→</span>
+						<?php echo arv2_editorial_arrow(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in helper. ?>
 					</span>
 				</a>
 			</article>
@@ -374,7 +347,7 @@ get_header();
 					<p class="published-reports__excerpt">Mapping the expansion of digital surveillance tools and their chilling effect on activists, lawyers, and independent media.</p>
 					<span class="published-reports__cta">
 						<span class="published-reports__cta-text">Read Report</span>
-						<span class="published-reports__cta-arrow" aria-hidden="true">→</span>
+						<?php echo arv2_editorial_arrow(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in helper. ?>
 					</span>
 				</a>
 			</article>
@@ -388,7 +361,7 @@ get_header();
 					<p class="published-reports__excerpt">A regional analysis of laws, platforms, and state practices that are narrowing the space for free expression online.</p>
 					<span class="published-reports__cta">
 						<span class="published-reports__cta-text">Read Report</span>
-						<span class="published-reports__cta-arrow" aria-hidden="true">→</span>
+						<?php echo arv2_editorial_arrow(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in helper. ?>
 					</span>
 				</a>
 			</article>
@@ -402,7 +375,7 @@ get_header();
 					<p class="published-reports__excerpt">Examining the human, economic, and democratic toll when governments restrict access to information and public debate.</p>
 					<span class="published-reports__cta">
 						<span class="published-reports__cta-text">Read Report</span>
-						<span class="published-reports__cta-arrow" aria-hidden="true">→</span>
+						<?php echo arv2_editorial_arrow(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in helper. ?>
 					</span>
 				</a>
 			</article>
@@ -415,7 +388,10 @@ get_header();
 
 		<?php
 		arv2_section_meta(
-			'Latest reports, resources, and updates from our work on digital rights, surveillance, accountability, and collective memory.'
+			'Latest reports, resources, and updates from our work on digital rights, surveillance, accountability, and collective memory.',
+			home_url( '/blog' ),
+			true,
+			__( 'View Blog Page', 'activate-rights-v2' )
 		);
 		?>
 	</header>
@@ -431,7 +407,7 @@ get_header();
 						<h3 class="updates-blog__featured-title">Faith, Fear, and Falsehoods: Mapping Communal Misinformation and Hate in Bangladesh&rsquo;s 2026 Election</h3>
 						<p class="updates-blog__featured-excerpt">A research report on how communal misinformation, AI-generated deception, and coordinated narrative manipulation shaped Bangladesh&rsquo;s 2026 election.</p>
 						<p class="updates-blog__meta">Minhaj Aman · February 27, 2026</p>
-						<span class="updates-blog__cta">Read More <span aria-hidden="true">→</span></span>
+						<span class="updates-blog__cta"><?php esc_html_e( 'Read More', 'activate-rights-v2' ); ?> <?php echo arv2_editorial_arrow(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped in helper. ?></span>
 					</a>
 					<hr class="updates-blog__divider">
 				</article>
@@ -443,12 +419,11 @@ get_header();
 								<div class="updates-blog__item-thumb updates-blog__thumb--green" aria-hidden="true"></div>
 							</div>
 							<div class="updates-blog__item-body">
-								<span class="updates-blog__category">Resource</span>
-								<h3 class="updates-blog__item-title">Right to Record in Elections: A Guide to Documenting Electoral Irregularities and Violence</h3>
-								<p class="updates-blog__item-excerpt">A practical guide on safely documenting election violence, irregularities, and protecting citizens&rsquo; right to record for accountability.</p>
-								<p class="updates-blog__meta">Subinoy Mustofi Eron · February 10, 2026</p>
+								<span class="updates-blog__category category-label">Resource</span>
+								<h3 class="updates-blog__item-title blog-row-title">Right to Record in Elections: A Guide to Documenting Electoral Irregularities and Violence</h3>
+								<p class="updates-blog__item-excerpt blog-row-excerpt">A practical guide on safely documenting election violence, irregularities, and protecting citizens&rsquo; right to record for accountability.</p>
+								<p class="updates-blog__meta blog-row-meta">Subinoy Mustofi Eron · February 10, 2026</p>
 							</div>
-							<span class="updates-blog__item-arrow" aria-hidden="true">→</span>
 						</a>
 					</li>
 					<li class="updates-blog__item">
@@ -457,12 +432,11 @@ get_header();
 								<div class="updates-blog__item-thumb updates-blog__thumb--yellow" aria-hidden="true"></div>
 							</div>
 							<div class="updates-blog__item-body">
-								<span class="updates-blog__category">Report</span>
-								<h3 class="updates-blog__item-title">When Visibility Becomes Vulnerability: TFGBV in Post-Uprising Bangladesh</h3>
-								<p class="updates-blog__item-excerpt">An analysis of technology-facilitated gender-based violence in Bangladesh after the uprising and its implications for digital safety.</p>
-								<p class="updates-blog__meta">Subinoy Mustofi Eron · February 9, 2026</p>
+								<span class="updates-blog__category category-label">Report</span>
+								<h3 class="updates-blog__item-title blog-row-title">When Visibility Becomes Vulnerability: TFGBV in Post-Uprising Bangladesh</h3>
+								<p class="updates-blog__item-excerpt blog-row-excerpt">An analysis of technology-facilitated gender-based violence in Bangladesh after the uprising and its implications for digital safety.</p>
+								<p class="updates-blog__meta blog-row-meta">Subinoy Mustofi Eron · February 9, 2026</p>
 							</div>
-							<span class="updates-blog__item-arrow" aria-hidden="true">→</span>
 						</a>
 					</li>
 					<li class="updates-blog__item">
@@ -471,12 +445,11 @@ get_header();
 								<div class="updates-blog__item-thumb updates-blog__thumb--red" aria-hidden="true"></div>
 							</div>
 							<div class="updates-blog__item-body">
-								<span class="updates-blog__category">Update</span>
-								<h3 class="updates-blog__item-title">Frequently Asked Questions — Archive &amp; Resist Conclave</h3>
-								<p class="updates-blog__item-excerpt">Everything participants need to know about the Archive &amp; Resist Conclave, including sessions, logistics, and participation details.</p>
-								<p class="updates-blog__meta">Subinoy Mustofi Eron · December 25, 2025</p>
+								<span class="updates-blog__category category-label">Update</span>
+								<h3 class="updates-blog__item-title blog-row-title">Frequently Asked Questions — Archive &amp; Resist Conclave</h3>
+								<p class="updates-blog__item-excerpt blog-row-excerpt">Everything participants need to know about the Archive &amp; Resist Conclave, including sessions, logistics, and participation details.</p>
+								<p class="updates-blog__meta blog-row-meta">Subinoy Mustofi Eron · December 25, 2025</p>
 							</div>
-							<span class="updates-blog__item-arrow" aria-hidden="true">→</span>
 						</a>
 					</li>
 					<li class="updates-blog__item">
@@ -485,12 +458,11 @@ get_header();
 								<div class="updates-blog__item-thumb updates-blog__thumb--blue" aria-hidden="true"></div>
 							</div>
 							<div class="updates-blog__item-body">
-								<span class="updates-blog__category">Update</span>
-								<h3 class="updates-blog__item-title">Call for Proposals: Archive &amp; Resist Conclave 2026 — Now Open</h3>
-								<p class="updates-blog__item-excerpt">An open invitation for practitioners, researchers, and activists to submit session proposals for the 2026 conclave.</p>
-								<p class="updates-blog__meta">Subinoy Mustofi Eron · December 24, 2025</p>
+								<span class="updates-blog__category category-label">Update</span>
+								<h3 class="updates-blog__item-title blog-row-title">Call for Proposals: Archive &amp; Resist Conclave 2026 — Now Open</h3>
+								<p class="updates-blog__item-excerpt blog-row-excerpt">An open invitation for practitioners, researchers, and activists to submit session proposals for the 2026 conclave.</p>
+								<p class="updates-blog__meta blog-row-meta">Subinoy Mustofi Eron · December 24, 2025</p>
 							</div>
-							<span class="updates-blog__item-arrow" aria-hidden="true">→</span>
 						</a>
 					</li>
 					<li class="updates-blog__item">
@@ -499,12 +471,11 @@ get_header();
 								<div class="updates-blog__item-thumb updates-blog__thumb--green" aria-hidden="true"></div>
 							</div>
 							<div class="updates-blog__item-body">
-								<span class="updates-blog__category">Opinion</span>
-								<h3 class="updates-blog__item-title">Biometric SIMs: A Relic of Authoritarianism Bangladesh Forgot to Question</h3>
-								<p class="updates-blog__item-excerpt">A critical reflection on biometric SIM registration and its long-term implications for privacy, surveillance, and state control.</p>
-								<p class="updates-blog__meta">Subinoy Mustofi Eron · December 4, 2025</p>
+								<span class="updates-blog__category category-label">Opinion</span>
+								<h3 class="updates-blog__item-title blog-row-title">Biometric SIMs: A Relic of Authoritarianism Bangladesh Forgot to Question</h3>
+								<p class="updates-blog__item-excerpt blog-row-excerpt">A critical reflection on biometric SIM registration and its long-term implications for privacy, surveillance, and state control.</p>
+								<p class="updates-blog__meta blog-row-meta">Subinoy Mustofi Eron · December 4, 2025</p>
 							</div>
-							<span class="updates-blog__item-arrow" aria-hidden="true">→</span>
 						</a>
 					</li>
 			</ul>
@@ -518,7 +489,11 @@ get_header();
 
 		<?php
 		arv2_section_meta(
-			'Partnerships with organizations, journalists, artists, and communities building collective resistance.'
+			'Partnerships with organizations, journalists, artists, and communities building collective resistance.',
+			home_url( '/contact' ),
+			true,
+			__( 'Contact us', 'activate-rights-v2' ),
+			__( 'Contact Us', 'activate-rights-v2' )
 		);
 		?>
 	</header>
